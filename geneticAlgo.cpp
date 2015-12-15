@@ -12,6 +12,11 @@ using namespace std;
 
 Genome::Genome(int chromosomes_)
 {
+    construct(chromosomes_);
+}
+
+void Genome::construct(int chromosomes_)
+{
     //cout<<"==========================================="<<endl;
     this->chromosomes = chromosomes_;
     decode();
@@ -169,11 +174,57 @@ Genome GenAlg::getChromoRoulette()
 {
     double randomNum = RANDOM_NUM * this->totalFitness;
     double fitnessSoFar = 0;
-    cout<<"random "<<randomNum<<endl;
+    //cout<<"random "<<randomNum<<endl;
     for(int i = 0; i < vecPop.size(); i++){
         fitnessSoFar += vecPop[i].fitnessVal;
         if(fitnessSoFar >= randomNum)
             return vecPop[i];
     }
     return Genome(0);
+}
+
+void GenAlg::crossover(Genome &mom, Genome &dad,
+                       Genome &baby1,Genome &baby2)
+{
+    int b1 = mom.chromosomes;
+    cout<<"mom "; mom.print();
+    int b2 = dad.chromosomes;
+    cout<<"dad "; dad.print();
+    if(RANDOM_NUM < this->crossoverRate)
+    {
+        int index = rand() % 32;
+        cout<<"index "<<index;
+        unsigned int mask;
+
+        if (index == 31)
+        {
+            mask = (1<<30) -1;
+            mask |= (1<<31);
+        }
+        else{
+            mask = (1<<(index))-1;
+        }
+        unsigned int x, y;
+        x = b1 & mask;
+        y = b2 & mask;
+
+        b1 = (b1 & ~mask) | y;
+        b2 = (b2 & ~mask) | x;
+    }
+    baby1.construct(b1);
+    //cout<<"bb1 ";baby1.print();
+    baby2.construct(b2);
+    //cout<<"bb2 ";baby2.print();
+}
+
+void GenAlg::mutate(Genome &chromo)
+{
+    for(int i = 0; i < 32; i++)
+    {
+        if(RANDOM_NUM < this->mutationRate)
+        {
+            //mutate bit
+            chromo.chromosomes ^= (1<<i);
+        }
+    }
 }

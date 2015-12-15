@@ -11,12 +11,13 @@ class Genome
 public:
     vector<int> nums;
     vector<char> ops;
-    int chromosomes;
+    unsigned chromosomes;
     double val;
     double fitnessVal;
 
     Genome() {}
     Genome(int chromosomes_) ;
+    void construct(int chromosomes_);
     void calc();
     void fitness();
     void decode();
@@ -42,9 +43,9 @@ public:
     int generation;
 
 
-    void Crossover(const Genome &mum, const Genome &dad,
+    void crossover(Genome &mom, Genome &dad,
                     Genome &baby1,Genome &baby2);
-    void Mutate(int chromo);
+    void mutate(Genome &chromo);
     Genome getChromoRoulette();
     GenAlg() {};
     GenAlg(int popsize, double MutRat, double CrossRat, int numweights);
