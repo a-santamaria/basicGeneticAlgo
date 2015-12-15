@@ -50,10 +50,10 @@ void Genome::printFormula()
 
 void Genome::fitness()
 {
-    if(this->val == 42)
-        this->fitnessVal = 0;
+    if(this->val == 50)
+        this->fitnessVal = 1000;
     else
-        this->fitnessVal = (1 / (42 - this->val));
+        this->fitnessVal = (1 / (50 - this->val));
 }
 
 void Genome::calc()
